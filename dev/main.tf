@@ -8,6 +8,4 @@ module "ec2" {
   ami_types         = var.ami_types
   instance_type     = var.instance_type
 
-
-
 }
