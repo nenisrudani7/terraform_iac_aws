@@ -1,0 +1,17 @@
+# Terraform files to ignore
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+.tfstate.*
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+dev-key
+terraform-key.pub.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+*.pub
+*.tfvars
