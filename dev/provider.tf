@@ -5,11 +5,14 @@ terraform {
       version = "6.13.0"
     }
   }
-   backend "s3" {
- 
-  }
+  #  backend "s3" {
+
+  # } 
 }
 
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
+  # if you have any iam user then add creds here
+  # access_key = ""
+  # secret_key = ""
 }

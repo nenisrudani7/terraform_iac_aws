@@ -28,6 +28,15 @@ variable "instance_type" {
   type = string
 }
 
+# iam ---------------------------------------------------------------------------
+
+# variable "username" {
+#   type = string
+# }
+# variable "policy_name" {
+#   type    = string
+#   default = "default_policy_name"
+# }
 
 # -------------------------------------------------------------------------------
 # use it if requirement is "go with object base approch"
