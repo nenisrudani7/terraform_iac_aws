@@ -1,6 +1,9 @@
 variable "env" {
   type = string
 }
+variable "region" {
+  type = string
+}
 
 
 # ec2 ------------------------------------------------------
@@ -42,20 +45,34 @@ variable "env" {
 # }
 
 # lambda--------------------------------------------------------------------------
-variable "function_name" {
-  type    = string
-  default = "default_name"
+# variable "function_name" {
+#   type    = string
+#   default = "default_name"
+# }
+
+# variable "role_name" {
+#   type    = string
+#   default = "default_role_name"
+# }
+
+# variable "policy_name" {
+#   type    = string
+#   default = "default_policy_name"
+# }
+
+# ecs----------------------------------------------------------------------------
+
+
+variable "image" {
+  type = string
+}
+variable "containerport" {
+  type = number
+}
+variable "desired_count" {
+  type = number
 }
 
-variable "role_name" {
-  type    = string
-  default = "default_role_name"
-}
-
-variable "policy_name" {
-  type    = string
-  default = "default_policy_name"
-}
 
 # -------------------------------------------------------------------------------
 # use it if requirement is "go with object base approch"
@@ -63,3 +80,4 @@ variable "policy_name" {
 #   default = "dev"
 #   type = string
 # }
+

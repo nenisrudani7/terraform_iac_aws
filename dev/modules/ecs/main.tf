@@ -1,10 +1,10 @@
-#################################################
-# ECS + ALB + Fargate + Execution Role + Logs
-#################################################
 
-###########################
+# tf file for ecs farget
+
+
+
 # Fetch default VPC
-###########################
+# what is use of data it fetch detail from exisiting servics
 data "aws_vpc" "default" {
   default = true
 }
@@ -16,22 +16,22 @@ data "aws_subnets" "default" {
   }
 }
 
-###########################
+
 # CloudWatch Log Group
-###########################
+
 resource "aws_cloudwatch_log_group" "ecs_log_group" {
   name              = "/ecs/ecs-sample"
   retention_in_days = 7
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # Security Group for ALB
-###########################
+
 resource "aws_security_group" "alb_sg" {
-  name        = "ecs-alb-sg"
+  name        = "${var.env}-ecs-alb-sg"
   description = "ALB security group"
   vpc_id      = data.aws_vpc.default.id
 
@@ -50,15 +50,15 @@ resource "aws_security_group" "alb_sg" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # Security Group for ECS tasks
-###########################
+
 resource "aws_security_group" "ecs_sg" {
-  name        = "ecs-sg"
+  name        = "${var.env}-ecs-sg"
   description = "ECS tasks security group"
   vpc_id      = data.aws_vpc.default.id
 
@@ -78,30 +78,30 @@ resource "aws_security_group" "ecs_sg" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # ALB
-###########################
+
 resource "aws_lb" "ecs_alb" {
-  name               = "ecs-alb"
+  name               = "${var.env}ecs-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = data.aws_subnets.default.ids
 
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # Target Group
-###########################
+
 resource "aws_lb_target_group" "ecs_tg" {
-  name        = "ecs-tg"
+  name        = "${var.env}-ecs-tg"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
@@ -120,13 +120,13 @@ resource "aws_lb_target_group" "ecs_tg" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # Listener
-###########################
+
 resource "aws_lb_listener" "ecs_listener" {
   load_balancer_arn = aws_lb.ecs_alb.arn
   port              = 80
@@ -138,18 +138,18 @@ resource "aws_lb_listener" "ecs_listener" {
   }
 }
 
-###########################
+
 # ECS Cluster
-###########################
+
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-fargate-cluster"
+  name = "${var.env}-ecs-farget"
 }
 
-###########################
+
 # ECS Task Execution Role
-###########################
+
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole1"
+  name = "${var.env}ecsTaskExecutionRole1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -170,11 +170,11 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-###########################
+
 # ECS Task Definition
-###########################
+
 resource "aws_ecs_task_definition" "ecs_task" {
-  family                   = "ecs-task"
+  family                   = "${var.env}-ecs-task"
   cpu                      = "1024"
   memory                   = "2048"
   network_mode             = "awsvpc"
@@ -184,11 +184,11 @@ resource "aws_ecs_task_definition" "ecs_task" {
   container_definitions = jsonencode([
     {
       name      = "ecs-sample"
-      image     = "nginx:latest"
+      image     = var.image
       essential = true
       portMappings = [
         {
-          containerPort = 80
+          containerPort = var.containerport
           protocol      = "tcp"
         }
       ]
@@ -196,7 +196,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
         logDriver = "awslogs"
         options = {
           "awslogs-group"         = aws_cloudwatch_log_group.ecs_log_group.name
-          "awslogs-region"        = "us-east-1"
+          "awslogs-region"        = var.region
           "awslogs-stream-prefix" = "ecs"
         }
       }
@@ -204,14 +204,14 @@ resource "aws_ecs_task_definition" "ecs_task" {
   ])
 }
 
-###########################
+
 # ECS Service
-###########################
+
 resource "aws_ecs_service" "ecs_service" {
-  name            = "ecs-service"
+  name            = "${var.env}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task.arn
-  desired_count   = 2
+  desired_count   = var.desired_count
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -223,20 +223,20 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_tg.arn
     container_name   = "ecs-sample"
-    container_port   = 80
+    container_port   = var.containerport
   }
 
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
 
   tags = {
-    Environment = "dev"
+    Environment = var.env
   }
 }
 
-###########################
+
 # Auto Scaling for ECS Service
-###########################
+
 resource "aws_appautoscaling_target" "ecs_scaling_target" {
   max_capacity       = 4
   min_capacity       = 1
