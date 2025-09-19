@@ -108,7 +108,10 @@ resource "aws_lb_target_group" "ecs_tg" {
   target_type = "ip"
 
   health_check {
+    enabled = true
+    # path                = "/health" 
     path                = "/"
+    protocol            = "HTTP"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -172,8 +175,8 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
 ###########################
 resource "aws_ecs_task_definition" "ecs_task" {
   family                   = "ecs-task"
-  cpu                      = "512"
-  memory                   = "1024"
+  cpu                      = "1024"
+  memory                   = "2048"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
@@ -181,7 +184,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
   container_definitions = jsonencode([
     {
       name      = "ecs-sample"
-      image     = "nenisrudani/node-ecs"
+      image     = "nginx:latest"
       essential = true
       portMappings = [
         {
