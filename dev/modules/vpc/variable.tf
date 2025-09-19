@@ -1,0 +1,30 @@
+variable "env" {
+  default = string
+}
+
+variable "cidr_block_vpc" {
+  type = string
+}
+
+variable "cidr_block_sn1" {
+  type = string
+}
+variable "availability_zone" {
+  type = string
+}
+
+variable "cidr_block_route" {
+  type = string
+}
+
+variable "inbound_ports" {
+  type = list(number)
+}
+
+variable "ingress_cidr_blocks" {
+  type = list(string)
+}
+
+variable "egress_cidr_blocks" {
+  type = list(string)
+}

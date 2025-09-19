@@ -1,13 +1,13 @@
 variable "env" {
      type = string 
 }
-variable "cidr_block_vpc" {
-  type = string
-}
+# variable "cidr_block_vpc" {
+#   type = string
+# }
 
-variable "cidr_block_sn1" {
-  type = string
-}
+# variable "cidr_block_sn1" {
+#   type = string
+# }
 
 variable "availability_zone" {
   type = string
@@ -20,6 +20,15 @@ variable "ami_types" {
 }
 
 variable "instance_type" {
+  type = string
+}
+
+# to connecte it with existing vpc
+variable "subnet_id" {
+  type = string
+}
+
+variable "security_group_id" {
   type = string
 }
 

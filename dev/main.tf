@@ -7,6 +7,9 @@
 #   instance_number   = var.instance_number
 #   ami_types         = var.ami_types
 #   instance_type     = var.instance_type
+# to connect it with existing vpc
+#   subnet_id         = module.vpc.subnet_id
+#   security_group_id = module.vpc.security_group_id
 
 # }
 
@@ -28,12 +31,23 @@
 # }
 
 # ecs-------------------------------------------------
-module "ecs" {
-  source = "./modules/ecs"
-  env = var.env
-  image = var.image
-  containerport = var.containerport
-  desired_count = var.desired_count
-  region = var.region
-}
+# module "ecs" {
+#   source = "./modules/ecs"
+#   env = var.env
+#   image = var.image
+#   containerport = var.containerport
+#   desired_count = var.desired_count
+#   region = var.region
+# }
 
+module "vpc" {
+  source = "./modules/vpc"
+  env = var.env
+  cidr_block_vpc = var.cidr_block_vpc
+  cidr_block_sn1 = var.cidr_block_sn1
+  availability_zone = var.availability_zone
+  cidr_block_route = var.cidr_block_route
+  inbound_ports       = var.inbound_ports
+  ingress_cidr_blocks = var.ingress_cidr_blocks
+  egress_cidr_blocks  = var.egress_cidr_blocks
+}

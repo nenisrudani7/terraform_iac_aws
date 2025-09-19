@@ -63,14 +63,47 @@ variable "region" {
 # ecs----------------------------------------------------------------------------
 
 
-variable "image" {
+# variable "image" {
+#   type = string
+# }
+# variable "containerport" {
+#   type = number
+# }
+# variable "desired_count" {
+#   type = number
+# }
+
+# vpc--------------------------------------------------------
+
+variable "env" {
+  default = string
+}
+
+variable "cidr_block_vpc" {
   type = string
 }
-variable "containerport" {
-  type = number
+
+variable "cidr_block_sn1" {
+  type = string
 }
-variable "desired_count" {
-  type = number
+variable "availability_zone" {
+  type = string
+}
+
+variable "cidr_block_route" {
+  type = string
+}
+
+variable "inbound_ports" {
+  type = list(number)
+}
+
+variable "ingress_cidr_blocks" {
+  type = list(string)
+}
+
+variable "egress_cidr_blocks" {
+  type = list(string)
 }
 
 
