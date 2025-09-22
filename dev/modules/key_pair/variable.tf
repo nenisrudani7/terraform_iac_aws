@@ -3,5 +3,8 @@ type        = string
 }
 
 variable "env" {
-  default = string
+  type = string
+}
+variable "key_name" {
+  type = string
 }

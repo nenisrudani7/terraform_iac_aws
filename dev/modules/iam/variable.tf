@@ -3,8 +3,14 @@ variable "username" {
 
 }
 
-
 variable "policy_name" {
   type    = string
 
+}
+variable "env" {
+  type = string
+  }
+
+variable "iam_actions" {
+  type = list(string)
 }

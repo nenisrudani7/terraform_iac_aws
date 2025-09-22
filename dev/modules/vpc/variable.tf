@@ -1,5 +1,5 @@
 variable "env" {
-  default = string
+ type= string
 }
 
 variable "cidr_block_vpc" {

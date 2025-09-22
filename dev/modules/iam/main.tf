@@ -3,9 +3,10 @@ resource "aws_iam_user" "iam_user_name" {
   name          = var.username
   force_destroy = true
 
-  tags = {
-    tag-key = "tag-value"
-  }
+tags = {
+       environment = var.env
+#     Name = "${var.env}-my-terraform-vpc"
+}
 }
 
 # Programmatic access key
@@ -28,11 +29,12 @@ resource "aws_iam_user_policy" "policy" {
     Statement = [
       {
         
-        Action = [
-          "s3:*",
-          "ec2:*",
-          "iam:*",
-        ]
+        # Action = [
+        #   "s3:*",
+        #   "ec2:*",
+        #   "iam:*",
+        # ]
+        Action = var.iam_actions
         
         Effect   = "Allow"
         Resource = "*"

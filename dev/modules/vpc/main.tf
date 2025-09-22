@@ -31,7 +31,7 @@ resource "aws_internet_gateway" "ig" {
 resource "aws_route_table" "my_route_table" {
   vpc_id = aws_vpc.my_vpc.id
   route {
-    cidr_block = vpc.cidr
+    cidr_block = var.cidr_block_route
     gateway_id = aws_internet_gateway.ig.id
   }
   tags = {

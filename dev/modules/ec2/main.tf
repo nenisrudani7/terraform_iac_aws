@@ -1,35 +1,16 @@
-# to create this you need to have ssh key and vpc also  
-# ssh-key
-resource "aws_key_pair" "keys" {
-  key_name   = "${var.env}-key_pair"
-  public_key = file("/home/nenis/work/terraform_iac_aws/dev/modules/ec2/dev-key.pub")
-
-  tags = {
-    environment = var.env
-
-  }
-}
-
-
 
 # instance-----------------------------------
 resource "aws_instance" "demo" {
   count = var.instance_number
   
-  depends_on = [aws_security_group.security_group, aws_key_pair.keys]
-  
 
-  #key_name = aws_key_pair.keys.key_name #using interpolation
-  key_name = module.key_pair.aws_key_pair.value
+  key_name = var.key_name 
   ami = var.ami_types
-  # instance_type          = var.ec2_types  #using variable
   instance_type          = var.instance_type
   availability_zone      = var.availability_zone
-  # vpc_security_group_ids = [aws_security_group.security_group.id]
-  # subnet_id              = aws_subnet.subnet.id
   vpc_security_group_ids = [var.security_group_id]
   subnet_id              = var.subnet_id
-  user_data = file("/home/nenis/work/terraform_iac_aws/dev/modules/ec2/nginx.sh")
+  user_data = file(var.user_data)
   associate_public_ip_address = true
   tags = {
     environment = var.env

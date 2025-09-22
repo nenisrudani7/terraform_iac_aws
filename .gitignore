@@ -16,3 +16,4 @@ terraform.tfstate*
 *.pub
 *.tfvars
 *.terraform.tfstate.lock.info
+provider.tf

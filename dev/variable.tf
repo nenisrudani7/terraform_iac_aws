@@ -8,31 +8,20 @@ variable "region" {
 
 # ec2 ------------------------------------------------------
 
-# variable "cidr_block_vpc" {
-#   type = string
-# }
 
-# variable "cidr_block_sn1" {
-#   type = string
-# }
+variable "instance_number" {
+  type = number
+}
+variable "user_data" {
+  type = string
+}
 
-# variable "availability_zone" {
-#   type = string
-# }
-
-# variable "region" {
-#   type = string
-# }
-# variable "instance_number" {
-#   type = number
-# }
-
-# variable "ami_types" {
-#   type = string
-# }
-# variable "instance_type" {
-#   type = string
-# }
+variable "ami_types" {
+  type = string
+}
+variable "instance_type" {
+  type = string
+}
 
 # iam ---------------------------------------------------------------------------
 
@@ -43,7 +32,9 @@ variable "region" {
 #   type    = string
 #   default = "default_policy_name"
 # }
-
+# variable "iam_actions" {
+#   type = list(string)
+# }
 # lambda--------------------------------------------------------------------------
 # variable "function_name" {
 #   type    = string
@@ -60,6 +51,13 @@ variable "region" {
 #   default = "default_policy_name"
 # }
 
+# variable "file_name" {
+#  type = string
+# }
+
+# variable "output_path" {
+#   type = string
+# }
 # ecs----------------------------------------------------------------------------
 
 
@@ -72,12 +70,11 @@ variable "region" {
 # variable "desired_count" {
 #   type = number
 # }
-
+# variable "runtime" {
+#   type = string
+# }
 # vpc--------------------------------------------------------
 
-variable "env" {
-  default = string
-}
 
 variable "cidr_block_vpc" {
   type = string
@@ -111,8 +108,26 @@ variable "key_path" {
   type = string
 }
 
+variable "key_name" {
+  type = string
+}
 
 
+
+# iam-role-------------------------------------------
+variable "role_name"{
+    type = string
+}
+
+variable "service" {
+  type = string
+}
+variable "policy_name" {
+  type = string
+}
+variable "actions" {
+  type = list(string)
+}
 
 
 # -------------------------------------------------------------------------------

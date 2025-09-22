@@ -1,6 +1,6 @@
-# output "public_ip" {
-#   value = module.ec2.public_ip
-# }
+output "public_ip" {
+  value = module.ec2.public_ip
+}
 
 
 # iam--------------------
@@ -42,3 +42,10 @@ output "subnet_id" {
 output "security_group_id" {
   value = module.vpc.security_group_id
 }
+
+# iam_role---------------------
+output "role_arn"{
+  value = module.iam-role.role_arn  
+}
+
+
