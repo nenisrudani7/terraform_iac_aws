@@ -1,7 +1,6 @@
 variable "key_path" {
 type        = string
 }
-
 variable "env" {
   type = string
 }

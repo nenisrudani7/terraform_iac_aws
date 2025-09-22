@@ -48,7 +48,7 @@ resource "aws_route_table_association" "my_subnet_assoc" {
 # security_group ------------------------------------------------------
 
 resource "aws_security_group" "security_group" {
-  name        = "terraform-security-groups"
+  name        = "${var.env}-terraform-security-groups"
   description = "this is for terraform security"
   vpc_id      = aws_vpc.my_vpc.id #interpolatoin : is a way inwhich you can inherit  or extract value from terrafrom block  it's also called dot object notesion    
   
@@ -61,7 +61,7 @@ resource "aws_security_group" "security_group" {
       to_port     = ingress.value
       protocol    = "tcp"
       cidr_blocks = var.ingress_cidr_blocks
-      description = "Port ${ingress.value} open"
+      description = "Port -${ingress.value}- open"
     }
   }
 

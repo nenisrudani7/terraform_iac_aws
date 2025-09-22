@@ -18,6 +18,7 @@ resource "aws_instance" "demo" {
 }
 
 
+
 # resource "aws_vpc" "my_vpc" {
 #   cidr_block           = var.cidr_block_vpc
 #   instance_tenancy     = "default"
