@@ -1,22 +1,3 @@
-
-# tf file for ecs farget
-
-
-
-# Fetch default VPC
-# what is use of data it fetch detail from exisiting servics
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-
 # CloudWatch Log Group
 
 resource "aws_cloudwatch_log_group" "ecs_log_group" {
@@ -28,59 +9,59 @@ resource "aws_cloudwatch_log_group" "ecs_log_group" {
 }
 
 
-# Security Group for ALB
+# # Security Group for ALB
 
-resource "aws_security_group" "alb_sg" {
-  name        = "${var.env}-ecs-alb-sg"
-  description = "ALB security group"
-  vpc_id      = data.aws_vpc.default.id
+# resource "aws_security_group" "alb_sg" {
+#   name        = "${var.env}-ecs-alb-sg"
+#   description = "ALB security group"
+#   vpc_id      = data.aws_vpc.default.id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+#   ingress {
+#     from_port   = 80
+#     to_port     = 80
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
 
-  tags = {
-    Environment = var.env
-  }
-}
+#   tags = {
+#     Environment = var.env
+#   }
+# }
 
 
-# Security Group for ECS tasks
+# # Security Group for ECS tasks
 
-resource "aws_security_group" "ecs_sg" {
-  name        = "${var.env}-ecs-sg"
-  description = "ECS tasks security group"
-  vpc_id      = data.aws_vpc.default.id
+# resource "aws_security_group" "ecs_sg" {
+#   name        = "${var.env}-ecs-sg"
+#   description = "ECS tasks security group"
+#   vpc_id      = modu
 
-  ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
-    description     = "Allow ALB to reach ECS"
-  }
+#   ingress {
+#     from_port       = 80
+#     to_port         = 80
+#     protocol        = "tcp"
+#     security_groups = [aws_security_group.alb_sg.id]
+#     description     = "Allow ALB to reach ECS"
+#   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
 
-  tags = {
-    Environment = var.env
-  }
-}
+#   tags = {
+#     Environment = var.env
+#   }
+# }
 
 
 # ALB
@@ -89,8 +70,8 @@ resource "aws_lb" "ecs_alb" {
   name               = "${var.env}ecs-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = data.aws_subnets.default.ids
+  security_groups    = [module.vpc.security_group_id]
+  subnets            = module.vpc.subnet_id
 
   tags = {
     Environment = var.env
@@ -102,17 +83,17 @@ resource "aws_lb" "ecs_alb" {
 
 resource "aws_lb_target_group" "ecs_tg" {
   name        = "${var.env}-ecs-tg"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = data.aws_vpc.default.id
-  target_type = "ip"
+  port        = var.elb_target_port
+  protocol    = var.protocol
+  vpc_id      = module.vpc.vpc_id
+  target_type = var.target_type
 
   health_check {
     enabled = true
     # path                = "/health" 
-    path                = "/"
-    protocol            = "HTTP"
-    interval            = 30
+    path                = var.healthcheck_path
+    protocol            = var.protocol
+    interval            = var.interval_time_second
     timeout             = 5
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -129,8 +110,8 @@ resource "aws_lb_target_group" "ecs_tg" {
 
 resource "aws_lb_listener" "ecs_listener" {
   load_balancer_arn = aws_lb.ecs_alb.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = var.elb_target_port
+  protocol          = var.protocol
 
   default_action {
     type             = "forward"
@@ -148,42 +129,42 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 
 # ECS Task Execution Role
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.env}ecsTaskExecutionRole1"
+# resource "aws_iam_role" "ecs_task_execution_role" {
+#   name = "${var.env}-ecsTaskExecutionRole1"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Principal = {
+#           Service = "ecs-tasks.amazonaws.com"
+#         }
+#         Action = "sts:AssumeRole"
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
+# resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
+#   role       = aws_iam_role.ecs_task_execution_role.name
+#   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+# }
 
 
 # ECS Task Definition
 
 resource "aws_ecs_task_definition" "ecs_task" {
   family                   = "${var.env}-ecs-task"
-  cpu                      = "1024"
-  memory                   = "2048"
+  cpu                      = var.cpu_size
+  memory                   = var.memory_size
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn       = module.iam_role.role_arn
 
   container_definitions = jsonencode([
     {
-      name      = "ecs-sample"
+      name      = var.task_defination_name
       image     = var.image
       essential = true
       portMappings = [
@@ -222,12 +203,12 @@ resource "aws_ecs_service" "ecs_service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_tg.arn
-    container_name   = "ecs-sample"
+    container_name   = var.container_name
     container_port   = var.containerport
   }
 
-  deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = var.deployment_minimum_percentage
+  deployment_maximum_percent         = var.deployment_maximum_percent
 
   tags = {
     Environment = var.env
@@ -238,15 +219,15 @@ resource "aws_ecs_service" "ecs_service" {
 # Auto Scaling for ECS Service
 
 resource "aws_appautoscaling_target" "ecs_scaling_target" {
-  max_capacity       = 4
-  min_capacity       = 1
+  max_capacity       = var.maxtask
+  min_capacity       = var.mintask
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
 
 resource "aws_appautoscaling_policy" "ecs_scaling_policy" {
-  name               = "ecs-cpu-scaling"
+  name               = "${var.env}-ecs-cpu-scaling"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.ecs_scaling_target.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_scaling_target.scalable_dimension
@@ -256,8 +237,8 @@ resource "aws_appautoscaling_policy" "ecs_scaling_policy" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-    target_value       = 50.0
-    scale_in_cooldown  = 60
-    scale_out_cooldown = 60
+    target_value       = var.cpuutilization_percentage
+    scale_in_cooldown  = var.scalintime
+    scale_out_cooldown = var.scalouttime
   }
 }

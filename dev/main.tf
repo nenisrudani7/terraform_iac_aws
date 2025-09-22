@@ -45,14 +45,31 @@ module "ec2" {
 # }
 
 # ecs-------------------------------------------------
-# module "ecs" {
-#   source = "./modules/ecs"
-#   env = var.env
-#   image = var.image
-#   containerport = var.containerport
-#   desired_count = var.desired_count
-#   region = var.region
-# }
+module "ecs" {
+  source = "./modules/ecs"
+  env = var.env
+  image = var.image
+  containerport = var.containerport
+  desired_count = var.desired_count
+  region = var.region
+elb_target_port = var.elb_target_port
+   healthcheck_path = var.healthcheck_path
+   protocol = var.protocol
+   target_type = var.target_type
+   interval_time_second = var.interval_time_second
+   cpu_size = var.cpu_size
+   memory_size = var.memory_size
+   task_defination_name = var.task_defination_name
+   container_name = var.container_name
+   deployment_maximum_percent = var.deployment_maximum_percent
+   deployment_minimum_percentage = var.deployment_minimum_percentage
+   maxtask = var.maxtask
+   mintask = var.mintask
+   cpuutilization_percentage = var.cpuutilization_percentage
+   scalintime = var.scalintime
+   scalouttime = var.scalouttime
+   
+}
 
 # vpc---------------------------------------------------
 module "vpc" {
