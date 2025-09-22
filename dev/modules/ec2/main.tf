@@ -17,10 +17,10 @@ resource "aws_instance" "demo" {
   count = var.instance_number
   
   depends_on = [aws_security_group.security_group, aws_key_pair.keys]
+  
 
- 
-  key_name = aws_key_pair.keys.key_name #using interpolation
- 
+  #key_name = aws_key_pair.keys.key_name #using interpolation
+  key_name = module.key_pair.aws_key_pair.value
   ami = var.ami_types
   # instance_type          = var.ec2_types  #using variable
   instance_type          = var.instance_type

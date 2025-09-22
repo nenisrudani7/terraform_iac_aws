@@ -1,3 +1,12 @@
+key pair-------------------------------------------
+
+module "key_pair" {
+  source = "./modules/key_pair"
+  env    = var.env
+  key_path = var.key_path
+}
+# ec2-------------------------------------------------
+
 # module "ec2" {
 #   source            = "./modules/ec2"
 #   env               = var.env
@@ -10,7 +19,8 @@
 # to connect it with existing vpc
 #   subnet_id         = module.vpc.subnet_id
 #   security_group_id = module.vpc.security_group_id
-
+    key_pair = module.key_pair.aws_key_pair.value
+#   region            = var.region
 # }
 
 # iam-----------------------------------------------

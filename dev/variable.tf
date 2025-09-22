@@ -106,6 +106,14 @@ variable "egress_cidr_blocks" {
   type = list(string)
 }
 
+#key pair -----------------------------------------------------------------------
+variable "key_path" {
+  type = string
+}
+
+
+
+
 
 # -------------------------------------------------------------------------------
 # use it if requirement is "go with object base approch"
