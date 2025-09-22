@@ -51,6 +51,9 @@ variable "deployment_maximum_percent" {
   type = number
 
 }
+variable "maxtask" {
+  type = number
+}
 variable "mintask" {
   type = number
 
