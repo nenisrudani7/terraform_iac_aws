@@ -45,35 +45,43 @@ resource "aws_route_table_association" "my_subnet_assoc" {
   route_table_id = aws_route_table.my_route_table.id
 }
 
+resource "aws_security_group" "security_group" {
+  
+}
+
+
+
+
+
 # security_group ------------------------------------------------------
 
-resource "aws_security_group" "security_group" {
-  name        = "${var.env}-terraform-security-groups"
-  description = "this is for terraform security"
-  vpc_id      = aws_vpc.my_vpc.id #interpolatoin : is a way inwhich you can inherit  or extract value from terrafrom block  it's also called dot object notesion    
+# resource "aws_security_group" "security_group" {
+#   name        = "${var.env}-terraform-security-groups"
+#   description = "this is for terraform security"
+#   vpc_id      = aws_vpc.my_vpc.id #interpolatoin : is a way inwhich you can inherit  or extract value from terrafrom block  it's also called dot object notesion    
   
 
-  #inbound rule 
-   dynamic "ingress" {
-    for_each = var.inbound_ports
-    content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
-      cidr_blocks = var.ingress_cidr_blocks
-      description = "Port -${ingress.value}- open"
-    }
-  }
+#   #inbound rule 
+#    dynamic "ingress" {
+#     for_each = var.inbound_ports
+#     content {
+#       from_port   = ingress.value
+#       to_port     = ingress.value
+#       protocol    = "tcp"
+#       cidr_blocks = var.ingress_cidr_blocks
+#       description = "Port -${ingress.value}- open"
+#     }
+#   }
 
-  #outbound rule
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1" #semantically equivalent to all ports
-   cidr_blocks = var.egress_cidr_blocks
-  }
-  tags = {
-    environment = var.env
-    name = "${var.env}-terraform-sg"
-  }
-}
+#   #outbound rule
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1" #semantically equivalent to all ports
+#    cidr_blocks = var.egress_cidr_blocks
+#   }
+#   tags = {
+#     environment = var.env
+#     name = "${var.env}-terraform-sg"
+#   }
+# }

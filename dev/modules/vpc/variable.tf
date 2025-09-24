@@ -17,14 +17,14 @@ variable "cidr_block_route" {
   type = string
 }
 
-variable "inbound_ports" {
-  type = list(number)
-}
+# variable "inbound_ports" {
+#   type = list(number)
+# }
 
-variable "ingress_cidr_blocks" {
-  type = list(string)
-}
+# variable "ingress_cidr_blocks" {
+#   type = list(string)
+# }
 
-variable "egress_cidr_blocks" {
-  type = list(string)
-}
+# variable "egress_cidr_blocks" {
+#   type = list(string)
+# }

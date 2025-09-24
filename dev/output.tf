@@ -48,4 +48,19 @@ output "role_arn"{
   value = module.iam-role.role_arn  
 }
 
+# /kms-key---------------
+output "kms-keys-arn"{
+  value = module.kms-key.a
+}
+
+# security_group------------------
+output "sg-groups-id"{
+    value = module.security-group.sg-groups-id
+}
+
+# rds-----------------------------
+output "rds-endpoint"{
+  value = module.rds.rds_endpoint
+}
+
 
