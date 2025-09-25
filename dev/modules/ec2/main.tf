@@ -3,13 +3,12 @@
 resource "aws_instance" "demo" {
   count = var.instance_number
   
-
   key_name = var.key_name 
   ami = var.ami_types
   instance_type          = var.instance_type
   availability_zone      = var.availability_zone
-  vpc_security_group_ids = [module.vpc.security_group_id]
-  subnet_id              = module.vpc.subnet_id
+  vpc_security_group_ids = var.security_group_id
+  subnet_id              = var.subnet_id
   user_data = file(var.user_data)
   associate_public_ip_address = true
   tags = {

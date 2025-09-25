@@ -1,7 +1,9 @@
 output "public_ip" {
   value = module.ec2.public_ip
 }
-
+output "instance_id"{
+  value = module.ec2.instance_id
+}
 
 # iam--------------------
 
@@ -34,33 +36,39 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 
-
 output "subnet_id" {
   value = module.vpc.subnet_id
 }
-
-output "security_group_id" {
-  value = module.vpc.security_group_id
+output "db_subnet_group" {
+  value = module.vpc.db_subnet_group
 }
-
+output "availability_zone" {
+  value = module.vpc.availability_zone
+}
+output "cidr_block_vpc" {
+  value = module.vpc.cidr_block_vpc
+}
+output "key_pair" {
+  value = module.key_pair.aws_key_pair
+}
 # iam_role---------------------
-output "role_arn"{
-  value = module.iam-role.role_arn  
-}
+# output "role_arn"{
+#   value = module.iam-role.role_arn  
+# }
 
 # /kms-key---------------
-output "kms-keys-arn"{
-  value = module.kms-key.a
-}
+# output "kms-keys-arn"{
+#   value = module.kms-key.a
+# }
 
 # security_group------------------
-output "sg-groups-id"{
-    value = module.security-group.sg-groups-id
+output "sg_groups_id" {
+  value = module.security_group.sg_groups_id
 }
 
 # rds-----------------------------
-output "rds-endpoint"{
-  value = module.rds.rds_endpoint
-}
+# output "rds_endpoint" {
+#   value = module.rds.rds_endpoint
+# }
 
 

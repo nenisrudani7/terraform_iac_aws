@@ -1,17 +1,7 @@
 variable "env" {
      type = string 
 }
-variable "cidr_block_vpc" {
-  type = string
-}
 
-variable "cidr_block_sn1" {
-  type = string
-}
-
-variable "availability_zone" {
-  type = string
-}
 variable "instance_number" {
   type = number
 }
@@ -29,16 +19,17 @@ variable "subnet_id" {
 }
 
 variable "security_group_id" {
-  type = string
-}
+  type = list(string)
 
-variable "key_pair" {
-   type = string
+}
+variable "availability_zone" {
+  type = string
 }
 
 variable "key_name" {
-  type = string
+   type = string
 }
+
 
 variable "user_data" {   
   type = string  

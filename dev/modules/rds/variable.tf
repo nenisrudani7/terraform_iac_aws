@@ -27,7 +27,8 @@ variable "username" {
 variable "password" {
    type = string
 }
-variable "vpc_security_group_ids" {
+
+variable "publicly_accessible" {
     type = string
 }
 
@@ -49,9 +50,11 @@ variable "deletion_protection" {
   type = string
 }
 
-variable "publicly_accessible" {
-    type = string
-}
+
 variable "env" {
   type = string
+}
+
+variable "security_group_id"{}
+variable "db_subnet_group_name" {
 }

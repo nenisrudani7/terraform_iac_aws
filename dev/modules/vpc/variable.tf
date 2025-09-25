@@ -7,10 +7,10 @@ variable "cidr_block_vpc" {
 }
 
 variable "cidr_block_sn1" {
-  type = string
+  type = list(string)
 }
 variable "availability_zone" {
-  type = string
+  type = list(string)
 }
 
 variable "cidr_block_route" {

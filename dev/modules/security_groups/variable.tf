@@ -17,3 +17,7 @@ variable "inbound_ports" {
 variable "vpc_id" {
   type = string
 }
+
+# variable "sg_groups_id" {
+#   type = string
+# }

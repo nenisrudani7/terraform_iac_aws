@@ -26,7 +26,7 @@ resource "aws_security_group" "security_group" {
   }
   tags = {
     environment = var.env
-    name = "${var.env}-terraform-sg"
+    Name = "${var.env}-terraform-sg"
   }
 }
 
