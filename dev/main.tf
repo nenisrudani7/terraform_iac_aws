@@ -78,6 +78,7 @@ module "vpc" {
   cidr_block_sn1    = var.cidr_block_sn1
   availability_zone = var.availability_zone
   cidr_block_route  = var.cidr_block_route
+  
 
   # ------same in sg no need to uncomment
   # inbound_ports       = var.inbound_ports
@@ -146,9 +147,10 @@ module "cloudwatch" {
   source = "./modules/cloudwatch"
 
   # Service info
-  service_id     = module.ec2.instance_id
+  service_id     = module.ec2.instance_id[0]
   service_name   = var.service_name
   type_mantioned = var.type_mantioned
+  type_of_metrics = var.type_of_metrics
 
   # CloudWatch metric settings
   period = var.period
@@ -170,9 +172,6 @@ module "cloudwatch" {
   evaluation_periods  = var.evaluation_periods
   threshold           = var.threshold
   alarm_description   = var.alarm_description
-
-  # Metrics names
-  typs_of_metrics = var.typs_of_metrics
 }
 
 

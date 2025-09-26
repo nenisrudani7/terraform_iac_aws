@@ -135,7 +135,6 @@ variable "instance_type" {
 # }
 # vpc--------------------------------------------------------
 
-
 variable "cidr_block_vpc" {
   type = string
 }
@@ -275,9 +274,9 @@ variable "inbound_ports" {
 # }
 
 # cloud watch --------------------------------------------
-variable "service_id" {
-  type = string
-}
+# variable "service_id" {
+#   type = string
+# }
 variable "type_of_graph" {
   type = string
 }
@@ -333,7 +332,7 @@ variable "text_widget_position" {
   })
 }
 
-variable "typs_of_metrics" {
+variable "type_of_metrics" {
   type = object({
     first_metrics = string
     second_metrics = string
@@ -360,30 +359,6 @@ variable "threshold" {
 variable "alarm_description" {
   type = string
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

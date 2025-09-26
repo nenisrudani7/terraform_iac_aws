@@ -6,9 +6,14 @@ resource "aws_instance" "demo" {
   key_name = var.key_name 
   ami = var.ami_types
   instance_type          = var.instance_type
-  availability_zone      = var.availability_zone
+  # availability_zone      = [var.availability_zone]
+  #   availability_zone      = element(var.availability_zone, count.index)
+  # subnet_id              = element(var.subnet_id, count.index)
+  availability_zone = var.availability_zone[0]
+  subnet_id         = var.subnet_id[0]
+
   vpc_security_group_ids = var.security_group_id
-  subnet_id              = var.subnet_id
+  # subnet_id              = [var.subnet_id]
   user_data = file(var.user_data)
   associate_public_ip_address = true
   tags = {

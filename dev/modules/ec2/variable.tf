@@ -15,7 +15,7 @@ variable "instance_type" {
 
 # to connecte it with existing vpc
 variable "subnet_id" {
-  type = string
+  type = list(string)
 }
 
 variable "security_group_id" {
@@ -23,7 +23,7 @@ variable "security_group_id" {
 
 }
 variable "availability_zone" {
-  type = string
+   type = list(string)
 }
 
 variable "key_name" {

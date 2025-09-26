@@ -18,12 +18,12 @@ resource "aws_subnet" "subnet" {
 
   tags = {
     Environment = var.env
-     Name        = "my-${var.env}-subnet-${count.index + 1}"
+     Name        = "my-${var.env}-subnet-${count.index + 1}-new"
   }
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "${var.env}-db-subnet-group"
+  name       = "${var.env}-db-subnet-group-new"
   subnet_ids = aws_subnet.subnet[*].id
 
   tags = {

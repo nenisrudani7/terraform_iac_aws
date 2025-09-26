@@ -60,7 +60,7 @@ variable "text_widget_position" {
   })
 }
 
-variable "typs_of_metrics" {
+variable "type_of_metrics" {
   type = object({
     first_metrics = string
 
