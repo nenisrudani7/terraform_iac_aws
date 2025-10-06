@@ -9,19 +9,19 @@ variable "region" {
 # ec2 ------------------------------------------------------
 
 
-variable "instance_number" {
-  type = number
-}
-variable "user_data" {
-  type = string
-}
+# variable "instance_number" {
+#   type = number
+# }
+# variable "user_data" {
+#   type = string
+# }
 
-variable "ami_types" {
-  type = string
-}
-variable "instance_type" {
-  type = string
-}
+# variable "ami_types" {
+#   type = string
+# }
+# variable "instance_type" {
+#   type = string
+# }
 
 # iam ---------------------------------------------------------------------------
 
@@ -177,19 +177,19 @@ variable "key_name" {
 
 
 # iam-role-------------------------------------------
-# variable "role_name"{
-#     type = string
-# }
+variable "role_name" {
+  type = string
+}
 
-# variable "service" {
-#   type = string
-# }
-# variable "policy_name" {
-#   type = string
-# }
-# variable "actions" {
-#   type = list(string)
-# }
+variable "service" {
+  type = string
+}
+variable "policy_name" {
+  type = string
+}
+variable "actions" {
+  type = list(string)
+}
 
 
 
@@ -274,91 +274,92 @@ variable "inbound_ports" {
 # }
 
 # cloud watch --------------------------------------------
+
 # variable "service_id" {
 #   type = string
 # }
-variable "type_of_graph" {
-  type = string
-}
-variable "cpu_widget_position" {
-  type = object({
-    type   = string
-    x      = number
-    y      = number
-    width  = number
-    height = number
-  })
-}
+# variable "type_of_graph" {
+#   type = string
+# }
+# variable "cpu_widget_position" {
+#   type = object({
+#     type   = string
+#     x      = number
+#     y      = number
+#     width  = number
+#     height = number
+#   })
+# }
 
-variable "service_name" {
-  type = string
-}
+# variable "service_name" {
+#   type = string
+# }
 
-variable "type_mantioned" {
-  type = string
-}
+# variable "type_mantioned" {
+#   type = string
+# }
 
-variable "period" {
-  type = number
-}
-variable "stat" {
-  type = string
-}
-
-
+# variable "period" {
+#   type = number
+# }
+# variable "stat" {
+#   type = string
+# }
 
 
 
-variable "networkin_widget_position" {
-  type = object({
-    type   = string
-    x      = number
-    y      = number
-    width  = number
-    height = number
-  })
-}
 
-variable "markdown" {
-  type = string
-}
-variable "text_widget_position" {
-  type = object({
-    type   = string
-    x      = number
-    y      = number
-    width  = number
-    height = number
-  })
-}
 
-variable "type_of_metrics" {
-  type = object({
-    first_metrics = string
-    second_metrics = string
+# variable "networkin_widget_position" {
+#   type = object({
+#     type   = string
+#     x      = number
+#     y      = number
+#     width  = number
+#     height = number
+#   })
+# }
 
-  })
-}
+# variable "markdown" {
+#   type = string
+# }
+# variable "text_widget_position" {
+#   type = object({
+#     type   = string
+#     x      = number
+#     y      = number
+#     width  = number
+#     height = number
+#   })
+# }
 
-# for alarm--------
-variable "alarm_name" {
-  type = string 
-}
+# variable "type_of_metrics" {
+#   type = object({
+#     first_metrics = string
+#     second_metrics = string
 
-variable "comparison_operator" {
-  type = string
-}
+#   })
+# }
 
-variable "evaluation_periods" {
-  type = number
-}
-variable "threshold" {
-  type = number
-}
+# # for alarm--------
+# variable "alarm_name" {
+#   type = string 
+# }
 
-variable "alarm_description" {
-  type = string
-}
+# variable "comparison_operator" {
+#   type = string
+# }
+
+# variable "evaluation_periods" {
+#   type = number
+# }
+# variable "threshold" {
+#   type = number
+# }
+
+# variable "alarm_description" {
+#   type = string
+# }
 
 
 
@@ -371,3 +372,97 @@ variable "alarm_description" {
 #   default = "dev"
 #   type = string
 # }
+
+# -----------------------------------------------------------------------------
+# elastic bean stack
+
+
+variable "language" {
+  type = string
+
+}
+
+variable "vpc_id" {
+  type = string
+
+}
+
+variable "subnet" {
+  type = list(string)
+}
+
+variable "ebs_instance_type" {
+  type = string
+}
+
+variable "solution_stack_name" {
+  type = string
+}
+
+variable "app_zip_path" {
+  type = string
+}
+
+variable "ebs_role_name" {
+  type = string
+}
+
+variable "bucket_id" {
+  type = string
+
+}
+variable "instace_profile_role_name" {
+  type = string
+}
+
+variable "key" {
+  type = string
+
+}
+
+variable "ebs_name" {
+  type = string
+
+}
+variable "version_name" {
+  type = string
+
+}
+variable "environment_name" {
+  type = string
+
+}
+variable "tier" {
+  type = string
+
+}
+
+variable "autoscaling_namespace" {
+  type = string
+
+}
+variable "autoscaling_name" {
+  type = string
+
+}
+
+variable "vpc_name_space" {
+  type = string
+
+}
+
+variable "ebs_instance_type" {
+  type = string
+}
+
+variable "public_access" {
+  type = string
+}
+
+# s3-----------------------------------
+variable "bucket_name" {
+  type = string
+}
+
+
+

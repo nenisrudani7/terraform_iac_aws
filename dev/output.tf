@@ -1,7 +1,7 @@
 output "public_ip" {
   value = module.ec2.public_ip
 }
-output "instance_id"{
+output "instance_id" {
   value = module.ec2.instance_id
 }
 
@@ -72,3 +72,18 @@ output "sg_groups_id" {
 # }
 
 
+# --------------------------------------------------------------
+# s3
+output "bucket_name" {
+  value = module.s3.bucket_id
+}
+
+# elastic_bs ------------------------------------------------------------------
+
+output "url" {
+  value = module.elastic_bs.url
+}
+
+output "domain" {
+  value = module.elastic_bs.domain
+}
