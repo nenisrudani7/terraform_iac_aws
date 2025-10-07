@@ -184,31 +184,8 @@ module "security_group" {
 #   alarm_description   = var.alarm_description
 # }
 
-# ----------------------------------
-# elastic beanstalk
-# module "elastic_bs" {
 
-#   source                    = "./modules/elastic_bs"
-#   region                    = var.region
-#   language                  = var.language
-#   vpc_id                    = module.vpc.vpc_id
-#   subnet                    = module.subnet.subnet
-#   ebs_instance_type         = var.ebs_instance_type
-#   solution_stack_name       = var.solution_stack_name
-#   app_zip_path              = var.app_zip_path
-#   ebs_role_name             = module.iam_role.name
-#   bucket_id                 = module.s3.bucket_id
-#   instace_profile_role_name = var.instace_profile_role_name
-#   key                       = var.key
-#   ebs_name                  = var.ebs_name
-#   version_name              = var.version_name
-#   environment_name          = var.environment_name
-#   tier                      = var.tier
-#   autoscaling_namespace     = var.autoscaling_namespace
-#   autoscaling_name          = var.autoscaling_name
-#   vpc_name_space            = var.vpc_name_space
-#   public_access             = var.public_access
-# }
+
 # -----------------------------------------------------
 # Elastic Beanstalk Module
 module "elastic_bs" {
@@ -234,7 +211,19 @@ module "elastic_bs" {
   public_access        = var.public_access
 }
 
+# ---EFS----------------------------------------------------------------
 
+module "efs" {
+  source = "./modules/efs"
+  creation_token = var.creation_token
+  performance_mode = var.performance_mode
+  throughput_mode = var.throughput_mode
+  lifecycle_policy = var.lifecycle_policy
+  encrypted = var.encrypted
+  env = var.env
+  security_groups_id = module.security_group.sg_groups_id
+  subnet_ids = module.vpc.subnet_id
+}
 
 
 

@@ -72,8 +72,8 @@ output "sg_groups_id" {
 # }
 
 
-# --------------------------------------------------------------
-# s3
+# -s3-------------------------------------------------------------
+
 output "bucket_name" {
   value = module.s3.bucket_id
 }
@@ -88,3 +88,13 @@ output "elastic_beanstalk_cname" {
   description = "Elastic Beanstalk environment CNAME"
   value       = module.elastic_bs.cname
 }
+
+
+# efs---------------------------------------------------------------------
+output "efs_id" {
+  value = module.efs.efs_id
+}
+output "efs_dns" {
+  value = module.efs.efs_dns
+}
+
