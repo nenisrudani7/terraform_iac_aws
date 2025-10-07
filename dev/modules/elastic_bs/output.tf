@@ -1,6 +1,9 @@
-output "url" {
-  value = aws_elastic_beanstalk_environment.tf_test_env.endpoint_url
+output "environment_url" {
+  description = "Endpoint URL of the Elastic Beanstalk environment"
+  value       = aws_elastic_beanstalk_environment.this.endpoint_url
 }
-output "domain" {
-    value = aws_elastic_beanstalk_environment.tf_test_env.cname
+
+output "cname" {
+  description = "CNAME of the Elastic Beanstalk environment"
+  value       = aws_elastic_beanstalk_environment.this.cname
 }

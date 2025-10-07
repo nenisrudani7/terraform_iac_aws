@@ -377,91 +377,165 @@ variable "inbound_ports" {
 # elastic bean stack
 
 
-variable "language" {
-  type = string
+# variable "language" {
+#   type = string
 
+# }
+
+# variable "vpc_id" {
+#   type = string
+
+# }
+
+# variable "subnet" {
+#   type = list(string)
+# }
+
+# variable "ebs_instance_type" {
+#   type = string
+# }
+
+# variable "solution_stack_name" {
+#   type = string
+# }
+
+# variable "app_zip_path" {
+#   type = string
+# }
+
+# variable "ebs_role_name" {
+#   type = string
+# }
+
+# variable "bucket_id" {
+#   type = string
+
+# }
+# variable "instace_profile_role_name" {
+#   type = string
+# }
+
+# variable "key" {
+#   type = string
+
+# }
+
+# variable "ebs_name" {
+#   type = string
+
+# }
+# variable "version_name" {
+#   type = string
+
+# }
+# variable "environment_name" {
+#   type = string
+
+# }
+# variable "tier" {
+#   type = string
+
+# }
+
+# variable "autoscaling_namespace" {
+#   type = string
+
+# }
+# variable "autoscaling_name" {
+#   type = string
+
+# }
+
+# variable "vpc_name_space" {
+#   type = string
+
+# }
+
+# variable "ebs_instance_type" {
+#   type = string
+# }
+
+# variable "public_access" {
+#   type = string
+# }
+
+# # s3-----------------------------------
+variable "bucket_name" {
+  type = string
 }
 
-variable "vpc_id" {
-  type = string
-
-}
-
-variable "subnet" {
-  type = list(string)
-}
-
-variable "ebs_instance_type" {
-  type = string
-}
-
-variable "solution_stack_name" {
-  type = string
-}
-
-variable "app_zip_path" {
-  type = string
-}
-
-variable "ebs_role_name" {
-  type = string
+# --------------------------------------------------------------
+# ---------- General Variables ----------
+variable "region" {
+  description = "AWS region to deploy Elastic Beanstalk"
+  type        = string
 }
 
 variable "bucket_id" {
-  type = string
-
-}
-variable "instace_profile_role_name" {
-  type = string
+  description = "S3 bucket ID where the application ZIP will be stored"
+  type        = string
 }
 
 variable "key" {
-  type = string
+  description = "S3 key for the uploaded ZIP file"
+  type        = string
+}
 
+variable "app_zip_path" {
+  description = "Path to the local application ZIP file"
+  type        = string
 }
 
 variable "ebs_name" {
-  type = string
-
+  description = "Elastic Beanstalk application name"
+  type        = string
 }
+
 variable "version_name" {
-  type = string
-
+  description = "Application version name"
+  type        = string
 }
+
 variable "environment_name" {
-  type = string
-
+  description = "Elastic Beanstalk environment name"
+  type        = string
 }
+
+variable "solution_stack_name" {
+  description = "Solution stack name for Elastic Beanstalk (e.g., Node.js 22 running on 64bit Amazon Linux 2023)"
+  type        = string
+}
+
 variable "tier" {
-  type = string
-
+  description = "Elastic Beanstalk environment tier (WebServer or Worker)"
+  type        = string
 }
 
-variable "autoscaling_namespace" {
-  type = string
-
-}
-variable "autoscaling_name" {
-  type = string
-
+# ---------- Networking ----------
+variable "vpc_id" {
+  description = "VPC ID where Elastic Beanstalk will be deployed"
+  type        = string
 }
 
-variable "vpc_name_space" {
-  type = string
-
+variable "subnets" {
+  description = "List of subnet IDs for Elastic Beanstalk environment"
+  type        = list(string)
 }
 
+# ---------- EC2 & IAM ----------
 variable "ebs_instance_type" {
-  type = string
+  description = "EC2 instance type for the environment"
+  type        = string
+}
+
+variable "instance_profile_name" {
+  description = "IAM instance profile name used by Elastic Beanstalk EC2 instances"
+  type        = string
 }
 
 variable "public_access" {
-  type = string
-}
-
-# s3-----------------------------------
-variable "bucket_name" {
-  type = string
+  description = "Whether to assign a public IP (true/false)"
+  type        = string
 }
 
 

@@ -79,11 +79,12 @@ output "bucket_name" {
 }
 
 # elastic_bs ------------------------------------------------------------------
-
-output "url" {
-  value = module.elastic_bs.url
+output "elastic_beanstalk_environment_url" {
+  description = "Elastic Beanstalk environment URL"
+  value       = module.elastic_bs.environment_url
 }
 
-output "domain" {
-  value = module.elastic_bs.domain
+output "elastic_beanstalk_cname" {
+  description = "Elastic Beanstalk environment CNAME"
+  value       = module.elastic_bs.cname
 }

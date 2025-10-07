@@ -1,59 +1,59 @@
 
-
-    resource "aws_s3_object" "app_source_bundle" {
-      bucket = var.bucket_id
-      key    = var.key # Or a dynamic key using uuid()
-      source = var.app_zip_path # Path to your local ZIP file
-    }
-
-# ELASTIC BEANSTALK APPLICATION
-
-
-resource "aws_elastic_beanstalk_application" "tf_test" {
-  name        = var.ebs_name
+# -------------------------------------------------------------------
+# here we specifie this for key and source of object
+resource "aws_s3_object" "app_source_bundle" {
+  bucket = var.bucket_id
+  key    = var.key
+  source = var.app_zip_path
 }
- resource "aws_elastic_beanstalk_application_version" "my_app_version" {
-      application = aws_elastic_beanstalk_application.tf_test.name
-      name        = var.version_name
-      bucket      = var.bucket_id
-      key         = aws_s3_object.app_source_bundle.key
-    }
 
-# ELASTIC BEANSTALK ENVIRONMENT
 
-resource "aws_elastic_beanstalk_environment" "tf_test_env" {
+resource "aws_elastic_beanstalk_application" "this" {
+  name = var.ebs_name
+}
+
+# Create Elastic Beanstalk Application Version
+resource "aws_elastic_beanstalk_application_version" "this" {
+  application = aws_elastic_beanstalk_application.this.name
+  name        = var.version_name
+  bucket      = var.bucket_id
+  key         = aws_s3_object.app_source_bundle.key
+}
+
+# Create Elastic Beanstalk Environment
+resource "aws_elastic_beanstalk_environment" "this" {
   name                = var.environment_name
-  application         = aws_elastic_beanstalk_application.tf_test.name
+  application         = aws_elastic_beanstalk_application.this.name
   solution_stack_name = var.solution_stack_name
-  version_label       = aws_elastic_beanstalk_application_version.my_app_version.name
+  version_label       = aws_elastic_beanstalk_application_version.this.name
   tier                = var.tier
 
   setting {
-    namespace = var.autoscaling_namespace
-    name      = var.autoscaling_name
-    value     = aws_iam_instance_profile.tf-ellb.name
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = var.instance_profile_name
   }
 
   setting {
-    namespace = var.vpc_name_space
-    name      = "VPCID"
+    namespace = "aws:ec2:vpc"
+    name      = "VPCId"
     value     = var.vpc_id
   }
 
   setting {
-    namespace = var.vpc_name_space
+    namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = var.subnet_id
+    value     = join(",", var.subnets)
   }
 
   setting {
-    namespace = var.instance_type
-    name      = "InstanceTypes"
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
     value     = var.ebs_instance_type
   }
 
   setting {
-    namespace = var.vpc_name_space
+    namespace = "aws:ec2:vpc"
     name      = "AssociatePublicIpAddress"
     value     = var.public_access
   }
@@ -64,4 +64,3 @@ resource "aws_elastic_beanstalk_environment" "tf_test_env" {
     value     = "public"
   }
 }
-

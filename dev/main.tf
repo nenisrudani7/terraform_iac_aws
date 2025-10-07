@@ -30,11 +30,11 @@
 
 
 
-# module "s3" {
-#   source = "./modules/s3"
-#   bucket_name = var.bucket_name
-#   env = var.env
-# }
+module "s3" {
+  source = "./modules/s3"
+  bucket_name = var.bucket_name
+  env = var.env
+}
 
 # iam-----------------------------------------------
 
@@ -186,29 +186,54 @@ module "security_group" {
 
 # ----------------------------------
 # elastic beanstalk
-module "elastic_bs" {
+# module "elastic_bs" {
 
-  source                    = "./modules/elastic_bs"
-  region                    = var.region
-  language                  = var.language
-  vpc_id                    = module.vpc.vpc_id
-  subnet                    = module.subnet.subnet
-  ebs_instance_type         = var.ebs_instance_type
-  solution_stack_name       = var.solution_stack_name
-  app_zip_path              = var.app_zip_path
-  ebs_role_name             = module.iam_role.name
-  bucket_id                 = module.s3.bucket_id
-  instace_profile_role_name = var.instace_profile_role_name
-  key                       = var.key
-  ebs_name                  = var.ebs_name
-  version_name              = var.version_name
-  environment_name          = var.environment_name
-  tier                      = var.tier
-  autoscaling_namespace     = var.autoscaling_namespace
-  autoscaling_name          = var.autoscaling_name
-  vpc_name_space            = var.vpc_name_space
-  public_access             = var.public_access
+#   source                    = "./modules/elastic_bs"
+#   region                    = var.region
+#   language                  = var.language
+#   vpc_id                    = module.vpc.vpc_id
+#   subnet                    = module.subnet.subnet
+#   ebs_instance_type         = var.ebs_instance_type
+#   solution_stack_name       = var.solution_stack_name
+#   app_zip_path              = var.app_zip_path
+#   ebs_role_name             = module.iam_role.name
+#   bucket_id                 = module.s3.bucket_id
+#   instace_profile_role_name = var.instace_profile_role_name
+#   key                       = var.key
+#   ebs_name                  = var.ebs_name
+#   version_name              = var.version_name
+#   environment_name          = var.environment_name
+#   tier                      = var.tier
+#   autoscaling_namespace     = var.autoscaling_namespace
+#   autoscaling_name          = var.autoscaling_name
+#   vpc_name_space            = var.vpc_name_space
+#   public_access             = var.public_access
+# }
+# -----------------------------------------------------
+# Elastic Beanstalk Module
+module "elastic_bs" {
+  source = "./modules/elastic_bs"
+
+  # General Config
+  bucket_id            = module.s3.bucket_id
+  key                  = var.key
+  app_zip_path         = var.app_zip_path
+  ebs_name             = var.ebs_name
+  version_name         = var.version_name
+  environment_name     = var.environment_name
+  solution_stack_name  = var.solution_stack_name
+  tier                 = var.tier
+
+  # Networking
+  vpc_id   = module.vpc.vpc_id
+  subnets  = module.vpc.subnet_id
+
+  # EC2 & IAM
+  ebs_instance_type    = var.ebs_instance_type
+  instance_profile_name = var.instance_profile_name
+  public_access        = var.public_access
 }
+
 
 
 
